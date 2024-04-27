@@ -13,7 +13,7 @@ router.post('/register',registerController)
 //Logig || POST METHOD
 router.post('/login',loginController)
 
-//test Route 
+//Token verify and get user data 
 router.get('/getUserData',requireSignIn,userDataController)
 
 export default router
