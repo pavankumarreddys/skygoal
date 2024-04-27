@@ -111,8 +111,42 @@ export const loginController = async (req,res)=>{
     }
 }
 
-//JWT test
-export const testController = async (req,res)=>{
-    console.log("protected route")
-    res.send("Protected route")
+//Send UserData
+export const userDataController = async (req,res)=>{
+    try{
+        const {email} = req.body
+        //validation
+        if(!email){
+            return res.status(400).send({
+                success:false,
+                message:"Invalid email",  
+            })
+        }
+
+        //check user 
+        const user = await userModel.findOne({email})
+
+        if(!user){
+            return res.status(400).send({
+                success:false,
+                message:"User Not Found"
+            })
+        }
+        
+
+       
+        res.status(200).send({
+            success:200,
+            message:"User Find Successfully",
+            user
+        })
+
+    }catch(error){
+        console.log("error",error)
+        res.status(500).send({
+            success:false,
+            message:"Error in Login",
+            error
+        })
+    }
 }
