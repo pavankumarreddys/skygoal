@@ -1,14 +1,23 @@
-import JWT from 'jsonwebtoken'
-import userModel from '../models/userModel.js'
+import jwt from "jsonwebtoken";
+import userModel from "../models/userModel.js";
 
-//protected route token base 
-export const requireSignIn = async(req,res,next) =>{
-    try{
-    const decode = JWT.verify(req.headers.authorization, process.env.JWT_SECRET)
-    req.user = decode
-    next()
-    }catch (error){
-        console.log("jwt",error)
+export const requireSignIn = async (req, res, next) => {
+  try {
+    const token = req.headers.authorization;
+    if (!token) {
+      return res.status(401).json({ message: "No token provided" });
     }
-}
-
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decoded;
+    next();
+  } catch (error) {
+    if (error.name === "TokenExpiredError") {
+      return res.status(401).json({ message: "Token expired" });
+    }
+    if (error.name === "JsonWebTokenError") {
+      return res.status(401).json({ message: "Invalid token" });
+    }
+    console.error("JWT verification error:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
