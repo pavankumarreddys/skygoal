@@ -20,7 +20,7 @@ export const registerController = async(req,res) => {
             return res.send({message:'Phone Number is Required'})
         }
         if(!address){
-            return res.send({message:'Address is Required'})
+            return res.send({message:'Address is Required.'})
         }
 
         //check user
