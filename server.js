@@ -5,7 +5,7 @@ import authRoutes from "./routes/authRoute.js";
 import cors from "cors";
 
 // Configure environment variables
-dotenv.config();
+dotenv.config()
 
 // Database configuration
 connectDb();
